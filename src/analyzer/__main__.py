@@ -1,61 +1,70 @@
 """
-Entry point for the Time Series Analysis project.
-Executes the full pipeline: Load -> Clean -> Analyze -> Visualize.
+Main Entry Point: ADANIPORTS Time Series Analysis Pipeline
+---------------------------------------------------------
+ The analytical workflow:
+1. Data Loading -> 2. Preprocessing -> 3. Statistical Analysis -> 4. Visualization
 """
 
 import pandas as pd
+import sys
 from .preprocessor import DataPreprocessor
 from .analyzer import TimeSeriesAnalyzer
 from .visualizer import TimeSeriesVisualizer
 
 def main():
-    print("--- ADANIPORTS Time Series Analysis Starting ---")
+    print("\n" + "="*50)
+    print("      ADANIPORTS TIME SERIES ANALYSIS PROJECT      ")
+    print("="*50)
     
-    # 1. Load Data
-    # Path assumes we are running from the root of the project
+    # --- STEP 1: DATA INGESTION ---
+    # Path assumes execution from the project root
+    file_path = "data/ADANIPORTS.csv"
     try:
-        df_raw = pd.read_csv("data/ADANIPORTS.csv")
+        df_raw = pd.read_csv(file_path)
+        print(f"[*] Success: Loaded {len(df_raw)} records from {file_path}")
     except FileNotFoundError:
-        print("Error: ADANIPORTS.csv not found in data/ folder.")
-        return
+        print(f"[!] Error: {file_path} not found. Ensure the data folder exists.")
+        sys.exit(1)
 
-    # 2. Preprocess
-    print(":::::Step1::::: Cleaning data and handling gaps...")
+    # --- STEP 2: PREPROCESSING ---
+    print("\n[Step 1/3] Preprocessing: Cleaning and Handling missed...")
     preprocessor = DataPreprocessor(df_raw)
+    
+    # Chaining the processing steps for a cleaner flow
     df_clean = preprocessor.process_data()
     df_clean = preprocessor.handle_outliers()
+    print("[+] Data cleaned and outliers addressed.")
 
-    # 3. Analyze
-    print("::::Step2::::: Running statistical tests (ADF, Volatility,..)...")
+    # --- STEP 3: STATISTICAL ANALYSIS ---
+    print("\n[Step 2/3] Analysis: Extracting Statistical Insights...")
     analyzer = TimeSeriesAnalyzer(df_clean)
     
+    # Run Stationarity Test
     adf_res = analyzer.adf_test()
-    print(f"ADF Test Stationary: {adf_res['is_stationary']} (p={adf_res['p-value']:.4f})")
+    status = "STATIONARY" if adf_res['is_stationary'] else "NON-STATIONARY"
+    print(f"[*] ADF Test: {status} (p-value: {adf_res['p-value']:.4f})")
     
+    # Calculate Volatility
     vol = analyzer.get_volatility_stats()
-    print(f"Annualized Volatility: {vol['Annual Volatility']:.2%}")
+    print(f"[*] Annualized Volatility: {vol['Annual Volatility']:.2%}")
 
-    # 4. Visualize
-    print("::::::Step3::::: Generating plots...")
+    # Prepare data for visualization
+    daily_ret = analyzer.daily_returns()
+    decomposition_results = analyzer.decompose_signal()
+
+    # --- STEP 4: VISUALIZATION ---
+    print("\n[Step 3/3] Visualization: Generating Insightful Plots...")
     viz = TimeSeriesVisualizer(df_clean)
     
-    # This will save 'rolling_stats.png' and show the plot
+    # Generate and save all plot artifacts
     viz.plot_rolling_stats(window=30)
-    
-    # This will save 'seasonal_heatmap.png'
     viz.plot_seasonal_heatmap()
-    
-    # Decompose and show
-    decomp = analyzer.decompose_signal()
-    
-    fig = decomp.plot()
-    fig.savefig("decomposition_plot.png")
-    
+    viz.plot_decomposition(decomposition_results)
+    viz.plot_daily_returns_distribution(daily_ret)
 
-    viz.plot_decomposition(decomp)
-
-
-    print("--- Analysis Complete! Files saved to root directory. ---")
+    print("\n" + "="*50)
+    print("   ANALYSIS COMPLETE: Files saved to root directory.   ")
+    print("="*50 + "\n")
 
 if __name__ == "__main__":
     main()

@@ -73,3 +73,9 @@ class TimeSeriesAnalyzer:
             'Daily Volatility': daily_vol,
             'Annual Volatility': daily_vol * (252 ** 0.5)
         }
+    def daily_returns(self):
+        """
+        Calculates daily returns from a price series
+        """
+        return self.df[self.column].pct_change().dropna()
+ 

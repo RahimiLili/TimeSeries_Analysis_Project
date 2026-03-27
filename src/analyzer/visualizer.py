@@ -71,6 +71,7 @@ class TimeSeriesVisualizer:
     
     def plot_decomposition(self, decomposition_result):
         """Plots the 4 components: Observed, Trend, Seasonal, and Residual."""
+       # plt.figure(figsize=(10, 6))
         fig = decomposition_result.plot()
         fig.set_size_inches(12, 10)
         plt.suptitle('Time Series Decomposition', fontsize=16)
@@ -79,3 +80,30 @@ class TimeSeriesVisualizer:
         plt.savefig("decomposition_plot.png")
         plt.show()
         plt.close()
+
+
+
+
+    def plot_daily_returns_distribution(self,daily_returns):
+        plt.figure(figsize=(10, 6))
+        
+        # 3. Create histogram with probability density
+        plt.hist(daily_returns, bins=100, color='skyblue', edgecolor='black', alpha=0.7, density=True)
+        
+        # 4. Statistical markers (Mean and Median)
+        mu, median = daily_returns.mean(), daily_returns.median()
+        plt.axvline(mu, color='red', linestyle='dashed', linewidth=1.5, label=f'Mean: {mu:.4%}')
+        plt.axvline(median, color='green', linestyle='dashed', linewidth=1.5, label=f'Median: {median:.4%}')
+        
+        # 5. Formatting
+        plt.title('Distribution of Daily Returns for  Price', fontsize=14)
+        plt.xlabel('Daily Return (Percentage Change)', fontsize=12)
+        plt.ylabel('Density', fontsize=12)
+        plt.legend()
+        plt.grid(axis='y', linestyle='--', alpha=0.7)
+        
+        plt.tight_layout()
+        plt.savefig('daily_returns_dist.png')
+        plt.show()
+        plt.close()
+    
