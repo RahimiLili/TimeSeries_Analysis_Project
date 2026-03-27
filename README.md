@@ -19,7 +19,7 @@ The `analyzer` package provides a modular pipeline for **Time Series Analysis**,
 This package focuses on:
 1. **Data Preprocessing:** Handling missing dates, frequency reindexing, and outlier removal.
 2. **Statistical Analysis:** Stationarity testing (ADF/KPSS) and signal decomposition.
-3. **Professional Visualization:** Heatmaps, ACF/PACF plots, and rolling statistics.
+3. **Visualization:** Heatmaps, ACF/PACF plots, and rolling statistics.
 
 ---
 
@@ -48,14 +48,14 @@ uv run -m analyzer
 Explore the data interactively:
 ```python
 from analyzer.preprocessor import DataPreprocessor
-# (See notebooks/analysis.ipynb for details)
+# (See notebooks/Timeseri_analysis.ipynb for details)
 ```
 
 ---
 
 ## Modules
 
-### 🛠 DataPreprocessor Module
+###  DataPreprocessor Module
 1. **`process_data()`**: Performs header cleaning, duplicate handling, and ensures a continuous daily frequency using time-interpolation.
 2. **`handle_outliers()`**: Identifies price anomalies using the IQR method and replaces them with median values.
 
@@ -86,5 +86,5 @@ TimeSeriesVisualizer(df).plot_rolling_stats(window=30)
 
 ---
 **Author:** Leila Rahimiyadkuri  
-**Course:** Final Project - TU Dortmund  
-**Deadline:** 31.03.2026
+**Course:** Introduction to Python, WS25/26 - TU Dortmund  
+
