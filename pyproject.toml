@@ -1,0 +1,21 @@
+[project]
+name = "analyzer"
+version = "0.1.0"
+description = "A simple tool to clean CSV data and generate summaries."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "pandas",
+    "matplotlib",
+    "seaborn",
+    "ipykernel",
+    "statsmodels",
+    "scipy",
+    "pmdarima",
+]
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project.scripts]
+analyzer = "analyzer.__main__:main"

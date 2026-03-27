@@ -1,0 +1,13 @@
+Metadata-Version: 2.4
+Name: analyzer
+Version: 0.1.0
+Summary: A simple tool to clean CSV data and generate summaries.
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: pandas
+Requires-Dist: matplotlib
+Requires-Dist: seaborn
+Requires-Dist: ipykernel
+Requires-Dist: statsmodels
+Requires-Dist: scipy
+Requires-Dist: pmdarima

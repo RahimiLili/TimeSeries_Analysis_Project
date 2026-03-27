@@ -1,0 +1,2 @@
+[console_scripts]
+analyzer = analyzer.__main__:main
