@@ -68,3 +68,14 @@ class TimeSeriesVisualizer:
         plt.savefig("rolling_stats.png")
         plt.show()
         plt.close()
+    
+    def plot_decomposition(self, decomposition_result):
+        """Plots the 4 components: Observed, Trend, Seasonal, and Residual."""
+        fig = decomposition_result.plot()
+        fig.set_size_inches(12, 10)
+        plt.suptitle('Time Series Decomposition', fontsize=16)
+        plt.tight_layout(rect=[0, 0.03, 1, 0.95])
+        
+        plt.savefig("decomposition_plot.png")
+        plt.show()
+        plt.close()

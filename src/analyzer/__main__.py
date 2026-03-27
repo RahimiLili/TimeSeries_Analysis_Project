@@ -51,6 +51,10 @@ def main():
     fig = decomp.plot()
     fig.savefig("decomposition_plot.png")
     
+
+    viz.plot_decomposition(decomp)
+
+
     print("--- Analysis Complete! Files saved to root directory. ---")
 
 if __name__ == "__main__":

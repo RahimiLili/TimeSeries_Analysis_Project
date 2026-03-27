@@ -14,51 +14,93 @@ Requires-Dist: scipy
 Requires-Dist: pmdarima
 Dynamic: license-file
 
-<<<<<<< HEAD
-
-Package:
-Time Series Analysis,
-
-
-Here is a breakdown of what each function does:
-
-1. adf_test(series)
-The Augmented Dickey-Fuller (ADF) test is a statistical "sanity check" used to see if a time series has a "unit root," meaning it's unpredictable and trend-dependent.
-
-Goal: To determine if the data is Stationary (mean and variance stay constant over time).
-
-The Logic: It tests the Null Hypothesis that the data is not stationary.
-
-Interpretation: If the p-value is < 0.05, we reject that hypothesis. The function returns is_stationary: True, meaning the data is likely safe for models like ARIMA.
-
-2. kpss_test(series)
-The Kwiatkowski-Phillips-Schmidt-Shin (KPSS) test is the "double-check" to the ADF test.
-
-Goal: Also tests for stationarity, but from the opposite perspective.
-
-The Logic: Its Null Hypothesis is that the data is stationary.
-
-Why use both? Using ADF and KPSS together helps you find "Trend Stationarity"—where data looks non-stationary because of a trend, but is actually predictable once that trend is removed.
-
-Interpretation: Here, a p-value > 0.05 means we fail to reject stationarity (hence is_stationary: True).
-
-3. decompose_signal(df, column, period)
-This function performs Classical Decomposition to strip a single line of data into its constituent parts.
-
-Trend: The long-term progression of the series (e.g., is the stock generally going up?).
-
-Seasonal: Repeated cycles that happen over a fixed period (e.g., higher retail sales every December).
-
-Resid (Residual/Noise): Whatever is left over after Trend and Seasonality are removed—the "random" part of the data.
-
-Parameters: The period tells the function how often a cycle repeats (e.g., 365 for daily data with yearly patterns).
-
-4. get_volatility_stats(df, column)
-This function measures Investment Risk by looking at how much price returns bounce around.
-
-Daily Volatility: The standard deviation of daily percentage changes. A high number means the price swings wildly day-to-day.
-
-Annual Volatility: This scales the daily risk to a yearly figure
-=======
 # TimeSeries_Analysis_Project
->>>>>>> 8f5b7661184568cc3095e4660677103f9b72bcaf
+
+[![Python Version](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+-----
+
+## Table of Contents
+- [Overview](#overview)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Modules](#modules)
+
+---
+
+## Overview
+The `analyzer` package provides a modular pipeline for **Time Series Analysis**, specifically designed for financial datasets like ADANIPORTS. It automates the process of transforming raw CSV data into meaningful statistical insights and visualizations.
+
+This package focuses on:
+1. **Data Preprocessing:** Handling missing dates, frequency reindexing, and outlier removal.
+2. **Statistical Analysis:** Stationarity testing (ADF/KPSS) and signal decomposition.
+3. **Visualization:** Heatmaps, ACF/PACF plots, and rolling statistics.
+
+---
+
+## Installation
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/RahimiLili/TimeSeries_Analysis_Project.git
+   cd TimeSeries_Analysis_Project
+   ```
+
+2. **Install with uv**
+   ```bash
+   uv pip install -e .
+   ```
+
+---
+
+## Usage
+### CLI Execution
+Run the full analysis pipeline with one command:
+```bash
+uv run -m analyzer
+```
+
+### Notebook Example
+Explore the data interactively:
+```python
+from analyzer.preprocessor import DataPreprocessor
+# (See notebooks/Timeseri_analysis.ipynb for details)
+```
+
+---
+
+## Modules
+
+###  DataPreprocessor Module
+1. **`process_data()`**: Performs header cleaning, duplicate handling, and ensures a continuous daily frequency using time-interpolation.
+2. **`handle_outliers()`**: Identifies price anomalies using the IQR method and replaces them with median values.
+
+**Example:**
+```python
+DataPreprocessor(df).process_data()
+```
+
+###  TimeSeriesAnalyzer Module
+1. **`adf_test()` / `kpss_test()`**: Performs dual stationarity checks to determine if the series is predictable.
+2. **`decompose_signal()`**: Breaks the data into **Trend**, **Seasonality**, and **Residuals**.
+3. **`get_volatility_stats()`**: Calculates annualized risk based on daily returns.
+
+**Example:**
+```python
+TimeSeriesAnalyzer(df).adf_test()
+```
+
+###  TimeSeriesVisualizer Module
+1. **`plot_seasonal_heatmap()`**: Visualizes monthly price patterns over the years.
+2. **`plot_pacf_acf()`**: Generates plots to help identify ARIMA model parameters.
+3. **`plot_rolling_stats()`**: Shows the original data vs. a 30-day moving average.
+
+**Example:**
+```python
+TimeSeriesVisualizer(df).plot_rolling_stats(window=30)
+```
+
+---
+**Author:** Leila Rahimiyadkuri  
+**Course:** Introduction to Python, WS25/26 - TU Dortmund  
+
