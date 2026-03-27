@@ -4,7 +4,7 @@ import pandas as pd
 
 
 class TimeSeriesAnalyzer:
-
+#
     def __init__(self, df, column='Close', date_col='Date', period=365):
         self.df = df
         self.column = column
