@@ -28,10 +28,10 @@ This package focuses on:
    ```bash
    git clone [https://github.com/RahimiLili/TimeSeries_Analysis_Project.git](https://github.com/RahimiLili/TimeSeries_Analysis_Project.git)
    cd TimeSeries_Analysis_Project
-2.**Install with uv**
+2. **Install with uv**
     ```bash
     uv pip install -e .
-3.**Usage**
+3. **Usage**
     **CLI Execution**
     Run the full analysis pipeline with one command:
     ```bash
