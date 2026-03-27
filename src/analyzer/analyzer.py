@@ -14,7 +14,7 @@ class TimeSeriesAnalyzer:
     """
 
     def __init__(self, df, column='Close', date_col='Date', period=252):
-        # We use 252 because that's the approximate number of trading days in a year instead of 365
+        # I use 252 because that's the approximate number of trading days in a year instead of 365
         self.df = df.copy()
         self.column = column
         self.date_col = date_col

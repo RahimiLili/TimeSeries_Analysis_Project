@@ -52,7 +52,7 @@ class DataPreprocessor:
         numeric_cols = self.df.select_dtypes(include=[np.number]).columns
         self.df[numeric_cols] = self.df[numeric_cols].interpolate(method='time')
         
-        # 6. Fill categorical gaps (like Symbol) with Forward Fill
+        # 6. Fill categorical gaps  with Forward Fill
         self.df = self.df.ffill()
         
         # Reset index to put 'Date' back as a column

@@ -1,6 +1,6 @@
 """
 Visualizer Module for Time Series Analysis.
-This class handles all plotting logic for the project.
+This class handles plotting for the project.
 """
 
 import matplotlib.pyplot as plt

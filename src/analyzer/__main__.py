@@ -20,13 +20,13 @@ def main():
         return
 
     # 2. Preprocess
-    print("Cleaning data and handling gaps...")
+    print(":::::Step1::::: Cleaning data and handling gaps...")
     preprocessor = DataPreprocessor(df_raw)
     df_clean = preprocessor.process_data()
     df_clean = preprocessor.handle_outliers()
 
     # 3. Analyze
-    print("Running statistical tests...")
+    print("::::Step2::::: Running statistical tests (ADF, Volatility,..)...")
     analyzer = TimeSeriesAnalyzer(df_clean)
     
     adf_res = analyzer.adf_test()
@@ -36,7 +36,7 @@ def main():
     print(f"Annualized Volatility: {vol['Annual Volatility']:.2%}")
 
     # 4. Visualize
-    print("Generating plots...")
+    print("::::::Step3::::: Generating plots...")
     viz = TimeSeriesVisualizer(df_clean)
     
     # This will save 'rolling_stats.png' and show the plot
@@ -47,7 +47,7 @@ def main():
     
     # Decompose and show
     decomp = analyzer.decompose_signal()
-    # Note: Use a standard matplotlib plot for decomposition as it returns a Figure
+    
     fig = decomp.plot()
     fig.savefig("decomposition_plot.png")
     
