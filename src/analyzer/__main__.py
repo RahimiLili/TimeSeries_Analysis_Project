@@ -57,10 +57,11 @@ def main():
     viz = TimeSeriesVisualizer(df_clean)
     
     # Generate and save all plot artifacts
-    viz.plot_rolling_stats(window=30)
-    viz.plot_seasonal_heatmap()
+    
     viz.plot_decomposition(decomposition_results)
+    viz.plot_seasonal_heatmap()
     viz.plot_daily_returns_distribution(daily_ret)
+    viz.plot_rolling_stats(window=30)
 
     print("\n" + "="*50)
     print("   ANALYSIS COMPLETE: Files saved to root directory.   ")
