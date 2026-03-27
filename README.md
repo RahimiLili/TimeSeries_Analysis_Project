@@ -32,12 +32,12 @@ This package focuses on:
     ```bash
     uv pip install -e .
 3. **Usage**
-    **CLI Execution**
+    ***CLI Execution***
     Run the full analysis pipeline with one command:
     ```bash
     uv run -m analyzer
 
-    **Notebook Example**
+    ***Notebook Example***
     Explore the data interactively:
     ```bash
     from analyzer.preprocessor import DataPreprocessor
