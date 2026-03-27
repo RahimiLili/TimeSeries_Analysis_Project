@@ -1,23 +1,57 @@
-import sys
-from .processor import load_and_clean, get_summary, create_plot
+"""
+Entry point for the Time Series Analysis project.
+Executes the full pipeline: Load -> Clean -> Analyze -> Visualize.
+"""
+
+import pandas as pd
+from .preprocessor import DataPreprocessor
+from .analyzer import TimeSeriesAnalyzer
+from .visualizer import TimeSeriesVisualizer
 
 def main():
-    # This allows the user to pass the CSV filename in the terminal
-    # Example: uv run -m analyzer ADANIPORTS.csv
-    csv_path = sys.argv[1] if len(sys.argv) > 1 else "ADANIPORTS.csv"
+    print("--- ADANIPORTS Time Series Analysis Starting ---")
     
+    # 1. Load Data
+    # Path assumes we are running from the root of the project
     try:
-        print(f"--- Loading and Cleaning: {csv_path} ---")
-        df = load_and_clean(csv_path)
-        
-        print("\n--- Data Summary ---")
-        print(get_summary(df))
-        
-        print("\n--- Generating Visualization ---")
-        create_plot(df)
-        
+        df_raw = pd.read_csv("data/ADANIPORTS.csv")
     except FileNotFoundError:
-        print(f"Error: The file '{csv_path}' was not found.")
+        print("Error: ADANIPORTS.csv not found in data/ folder.")
+        return
+
+    # 2. Preprocess
+    print("Cleaning data and handling gaps...")
+    preprocessor = DataPreprocessor(df_raw)
+    df_clean = preprocessor.process_data()
+    df_clean = preprocessor.handle_outliers()
+
+    # 3. Analyze
+    print("Running statistical tests...")
+    analyzer = TimeSeriesAnalyzer(df_clean)
+    
+    adf_res = analyzer.adf_test()
+    print(f"ADF Test Stationary: {adf_res['is_stationary']} (p={adf_res['p-value']:.4f})")
+    
+    vol = analyzer.get_volatility_stats()
+    print(f"Annualized Volatility: {vol['Annual Volatility']:.2%}")
+
+    # 4. Visualize
+    print("Generating plots...")
+    viz = TimeSeriesVisualizer(df_clean)
+    
+    # This will save 'rolling_stats.png' and show the plot
+    viz.plot_rolling_stats(window=30)
+    
+    # This will save 'seasonal_heatmap.png'
+    viz.plot_seasonal_heatmap()
+    
+    # Decompose and show
+    decomp = analyzer.decompose_signal()
+    # Note: Use a standard matplotlib plot for decomposition as it returns a Figure
+    fig = decomp.plot()
+    fig.savefig("decomposition_plot.png")
+    
+    print("--- Analysis Complete! Files saved to root directory. ---")
 
 if __name__ == "__main__":
     main()

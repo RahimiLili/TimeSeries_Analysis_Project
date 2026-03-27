@@ -1,18 +1,33 @@
+"""
+Core Analysis Module for Time Series Data.
+This module provides statistical tests (ADF, KPSS) and signal 
+decomposition specifically tuned for financial datasets like ADANIPORTS.
+"""
+
 from statsmodels.tsa.stattools import adfuller, kpss
 from statsmodels.tsa.seasonal import seasonal_decompose
 import pandas as pd
 
-
 class TimeSeriesAnalyzer:
-#
-    def __init__(self, df, column='Close', date_col='Date', period=365):
-        self.df = df
+    """
+    A tool to automate the statistical evaluation of time series data.
+    """
+
+    def __init__(self, df, column='Close', date_col='Date', period=252):
+        # We use 252 because that's the approximate number of trading days in a year instead of 365
+        self.df = df.copy()
         self.column = column
         self.date_col = date_col
         self.period = period
+        
+        # Ensure the date column is actually a datetime object for the decomposition
+        self.df[self.date_col] = pd.to_datetime(self.df[self.date_col])
 
     def adf_test(self):
-        """Augmented Dickey-Fuller test for Stationarity."""
+        """
+        Augmented Dickey-Fuller test for Stationarity.
+        If p-value < 0.05, the data is stationary.
+        """
         series = self.df[self.column].dropna()
         res = adfuller(series)
         return {
@@ -22,7 +37,10 @@ class TimeSeriesAnalyzer:
         }
 
     def kpss_test(self):
-        """KPSS test (opposite of ADF)."""
+        """
+        KPSS test (opposite of ADF).
+        If p-value > 0.05, the data is stationary.
+        """
         series = self.df[self.column].dropna()
         res = kpss(series, regression='c', nlags="auto")
         return {
@@ -32,7 +50,11 @@ class TimeSeriesAnalyzer:
         }
 
     def decompose_signal(self):
-        """Splits data into Trend, Seasonal, and Resid."""
+        """
+        Splits data into Trend, Seasonal, and Residuals.
+        Uses an additive model suitable for price data.
+        """
+        # Set the date as index specifically for the decomposition tool
         df_idx = self.df.set_index(self.date_col)
         return seasonal_decompose(
             df_idx[self.column],
@@ -41,9 +63,13 @@ class TimeSeriesAnalyzer:
         )
 
     def get_volatility_stats(self):
-        """Calculates rolling standard deviation as a proxy for risk."""
-        returns = self.df[self.column].pct_change()
+        """
+        Calculates daily and annual volatility using percentage changes.
+        Annualized volatility = daily_std * sqrt(252 trading days).
+        """
+        returns = self.df[self.column].pct_change().dropna()
+        daily_vol = returns.std()
         return {
-            'Daily Volatility': returns.std(),
-            'Annual Volatility': returns.std() * (252 ** 0.5)
+            'Daily Volatility': daily_vol,
+            'Annual Volatility': daily_vol * (252 ** 0.5)
         }

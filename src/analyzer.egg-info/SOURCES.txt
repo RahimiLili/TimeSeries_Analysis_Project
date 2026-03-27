@@ -1,6 +1,7 @@
+LICENSE
 README.md
 pyproject.toml
-src/analyzer/__int__.py
+src/analyzer/__init__.py
 src/analyzer/__main__.py
 src/analyzer/analyzer.py
 src/analyzer/preprocessor.py

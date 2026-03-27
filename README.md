@@ -1,48 +1,49 @@
-<<<<<<< HEAD
+ADANIPORTS Time Series Analysis Package
+A professional Python tool for cleaning, analyzing, and visualizing financial time series data. This project uses the ADANIPORTS dataset to demonstrate stationarity testing, signal decomposition, and volatility modeling.
 
-Package:
-Time Series Analysis,
+ Installation
+This project is managed with uv. To install the package in editable mode:
 
+Bash
+uv pip install -e .
+ Usage
+Command Line Interface
+You can run the full analysis pipeline directly from your terminal:
 
-Here is a breakdown of what each function does:
+Bash
+uv run -m analyzer
+Jupyter Notebook
+For a detailed step-by-step walkthrough and interactive visualizations, explore the provided notebook:
+notebooks/analysis.ipynb
 
-1. adf_test(series)
-The Augmented Dickey-Fuller (ADF) test is a statistical "sanity check" used to see if a time series has a "unit root," meaning it's unpredictable and trend-dependent.
+ Core Analysis Features
+1. Statistical Stationarity Testing
+To ensure the data is suitable for forecasting models like ARIMA, the package performs a dual-check:
 
-Goal: To determine if the data is Stationary (mean and variance stay constant over time).
+ADF Test (adf_test): A statistical "sanity check" to see if a time series is trend-dependent.
 
-The Logic: It tests the Null Hypothesis that the data is not stationary.
+Goal: Determine if the data is Stationary (constant mean/variance).
 
-Interpretation: If the p-value is < 0.05, we reject that hypothesis. The function returns is_stationary: True, meaning the data is likely safe for models like ARIMA.
+Logic: If p-value < 0.05, we reject the null hypothesis; the data is likely stationary.
 
-2. kpss_test(series)
-The Kwiatkowski-Phillips-Schmidt-Shin (KPSS) test is the "double-check" to the ADF test.
+KPSS Test (kpss_test): The "double-check" to the ADF test.
 
-Goal: Also tests for stationarity, but from the opposite perspective.
+Logic: It assumes the data is stationary as the null hypothesis.
 
-The Logic: Its Null Hypothesis is that the data is stationary.
+Why use both? Using ADF and KPSS together identifies Trend Stationarity—where data looks non-stationary only because of an underlying trend.
 
-Why use both? Using ADF and KPSS together helps you find "Trend Stationarity"—where data looks non-stationary because of a trend, but is actually predictable once that trend is removed.
+2. Signal Decomposition (decompose_signal)
+This function performs Classical Decomposition to strip the price data into its constituent parts:
 
-Interpretation: Here, a p-value > 0.05 means we fail to reject stationarity (hence is_stationary: True).
+Trend: The long-term progression (e.g., is the stock generally going up?).
 
-3. decompose_signal(df, column, period)
-This function performs Classical Decomposition to strip a single line of data into its constituent parts.
+Seasonal: Repeated cycles (e.g., higher trading volumes at the end of the fiscal year).
 
-Trend: The long-term progression of the series (e.g., is the stock generally going up?).
+Residual (Noise): The random variations left over after Trend and Seasonality are removed.
 
-Seasonal: Repeated cycles that happen over a fixed period (e.g., higher retail sales every December).
+3. Risk & Volatility Metrics (get_volatility_stats)
+Measures investment risk by analyzing price "bounciness":
 
-Resid (Residual/Noise): Whatever is left over after Trend and Seasonality are removed—the "random" part of the data.
+Daily Volatility: The standard deviation of daily percentage changes.
 
-Parameters: The period tells the function how often a cycle repeats (e.g., 365 for daily data with yearly patterns).
-
-4. get_volatility_stats(df, column)
-This function measures Investment Risk by looking at how much price returns bounce around.
-
-Daily Volatility: The standard deviation of daily percentage changes. A high number means the price swings wildly day-to-day.
-
-Annual Volatility: This scales the daily risk to a yearly figure
-=======
-# TimeSeries_Analysis_Project
->>>>>>> 8f5b7661184568cc3095e4660677103f9b72bcaf
+Annual Volatility: Scales daily risk to a yearly figure using the square root of time:
