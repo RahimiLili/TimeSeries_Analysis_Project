@@ -45,11 +45,9 @@ uv run -m analyzer
 ```
 
 ### Notebook Example
-Explore the data interactively:
-```python
-from analyzer.preprocessor import DataPreprocessor
-# (See notebooks/Timeseri_analysis.ipynb for details)
-```
+Explore the data :
+
+# See notebooks/Timeseri_analysis.ipynb for details
 
 ---
 
