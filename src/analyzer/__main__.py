@@ -70,7 +70,7 @@ def main():
     viz.plot_rolling_stats(window=30)
 
     print("\n" + "="*50)
-    print("   ANALYSIS COMPLETE: Files saved to root directory.   ")
+    print("   ANALYSIS COMPLETE: Files saved to Result_Pics folder.   ")
     print("="*50 + "\n")
 
 if __name__ == "__main__":

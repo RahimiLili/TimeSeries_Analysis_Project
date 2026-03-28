@@ -7,16 +7,19 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
 import pandas as pd
+from pathlib import Path
 
 class TimeSeriesVisualizer:
     """
     A class to generate  plots for Time Series data.
     """
-
-    def __init__(self, df, date_col='Date', target_col='Close'):
+    
+    def __init__(self, df, date_col='Date', target_col='Close',output_folder='Result_Pics'):
         self.df = df.copy()
         self.date_col = date_col
         self.target_col = target_col
+        self.output_dir = Path(output_folder)
+        self.output_dir.mkdir(parents=True, exist_ok=True)
         # Ensure date is datetime for plotting
         self.df[self.date_col] = pd.to_datetime(self.df[self.date_col])
 
@@ -27,7 +30,7 @@ class TimeSeriesVisualizer:
         plt.title(f"Time Series: {self.target_col}")
         plt.legend()
         plt.grid(True, alpha=0.3)
-        plt.savefig("TimeseriesData.png")
+        plt.savefig(self.output_dir /"TimeseriesData.png")
         plt.show()
         plt.close()
     
@@ -49,7 +52,7 @@ class TimeSeriesVisualizer:
         sns.heatmap(pivot, cmap='YlGnBu')
         plt.title(f"Seasonal Heatmap: {self.target_col}")
         plt.ylabel("Month (1-12)")
-        plt.savefig("seasonal_heatmap.png")
+        plt.savefig(self.output_dir /"seasonal_heatmap.png")
         plt.show()
         plt.close()
 
@@ -62,7 +65,7 @@ class TimeSeriesVisualizer:
         plot_pacf(series, ax=ax2, lags=lags)
         
         plt.suptitle(f"ACF and PACF for {self.target_col}")
-        plt.savefig("acf_pacf_plots.png")
+        plt.savefig(self.output_dir /"acf_pacf_plots.png")
         plt.show()
         plt.close()
 
@@ -77,7 +80,7 @@ class TimeSeriesVisualizer:
         plt.title(f"Rolling Statistics: {self.target_col}")
         plt.legend()
         plt.grid(True, alpha=0.3)
-        plt.savefig("rolling_stats.png")
+        plt.savefig(self.output_dir /"rolling_stats.png")
         plt.show()
         plt.close()
     
@@ -89,7 +92,7 @@ class TimeSeriesVisualizer:
         plt.suptitle('Time Series Decomposition', fontsize=16)
         plt.tight_layout(rect=[0, 0.03, 1, 0.95])
         
-        plt.savefig("decomposition_plot.png")
+        plt.savefig(self.output_dir /"decomposition_plot.png")
         plt.show()
         plt.close()
 
@@ -115,7 +118,7 @@ class TimeSeriesVisualizer:
         plt.grid(axis='y', linestyle='--', alpha=0.7)
         
         plt.tight_layout()
-        plt.savefig('daily_returns_dist.png')
+        plt.savefig(self.output_dir /'daily_returns_dist.png')
         plt.show()
         plt.close()
     
