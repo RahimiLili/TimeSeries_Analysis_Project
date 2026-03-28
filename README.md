@@ -78,6 +78,8 @@ TimeSeriesAnalyzer(df).adf_test()
 1. **`plot_seasonal_heatmap()`**: Visualizes monthly price patterns over the years.
 2. **`plot_pacf_acf()`**: Generates plots to help identify ARIMA model parameters.
 3. **`plot_rolling_stats()`**: Shows the original data vs. a 30-day moving average.
+4. **`plot_decomposition()`**: Plots the 4 components: Observed, Trend, Seasonal, and Residual.
+5. **`plot_daily_returns_distribution()`**: Plot distribustion of daily returns
 
 **Example:**
 ```python
