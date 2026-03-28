@@ -20,6 +20,18 @@ class TimeSeriesVisualizer:
         # Ensure date is datetime for plotting
         self.df[self.date_col] = pd.to_datetime(self.df[self.date_col])
 
+    def plot_data(self):
+        """Plot data """
+        plt.figure(figsize=(12, 6))
+        plt.plot(self.df[self.date_col], self.df[self.target_col], label='Data')
+        plt.title(f"Time Series: {self.target_col}")
+        plt.legend()
+        plt.grid(True, alpha=0.3)
+        plt.savefig("TimeseriesData.png")
+        plt.show()
+        plt.close()
+    
+
     def plot_seasonal_heatmap(self):
         """Creates a heatmap showing average price by Month and Year."""
         df_copy = self.df.copy()
@@ -87,15 +99,15 @@ class TimeSeriesVisualizer:
     def plot_daily_returns_distribution(self,daily_returns):
         plt.figure(figsize=(10, 6))
         
-        # 3. Create histogram with probability density
+        #  Create histogram with probability density
         plt.hist(daily_returns, bins=100, color='skyblue', edgecolor='black', alpha=0.7, density=True)
         
-        # 4. Statistical markers (Mean and Median)
+        #  Statistical markers (Mean and Median)
         mu, median = daily_returns.mean(), daily_returns.median()
         plt.axvline(mu, color='red', linestyle='dashed', linewidth=1.5, label=f'Mean: {mu:.4%}')
         plt.axvline(median, color='green', linestyle='dashed', linewidth=1.5, label=f'Median: {median:.4%}')
         
-        # 5. Formatting
+        #  Formatting
         plt.title('Distribution of Daily Returns for  Price', fontsize=14)
         plt.xlabel('Daily Return (Percentage Change)', fontsize=12)
         plt.ylabel('Density', fontsize=12)
