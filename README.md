@@ -44,7 +44,7 @@ Run the full analysis pipeline with one command:
 uv run -m analyzer
 ```
 
-## Notebook Example
+### Notebook Example
 See notebooks/Timeseri_analysis.ipynb for details
 
 ---
