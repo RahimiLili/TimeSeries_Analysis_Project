@@ -51,36 +51,33 @@ See notebooks/Timeseri_analysis.ipynb for details
 
 ## Modules
 
-###  DataPreprocessor Module
-1. **`process_data()`**: Performs header cleaning, duplicate handling, and ensures a continuous daily frequency using time-interpolation.
-2. **`handle_outliers()`**: Identifies price anomalies using the IQR method and replaces them with median values.
+###  Preprocessor Module
+This module cleans and prepares time series data for analysis.
+1. **`clean_headers() `**: Removes leading/trailing spaces from column names
+2. **`process_data()`**: Duplicate handling, and ensures a continuous daily frequency using time-interpolation.
+3. **`handle_outliers()`**: Identifies price anomalies using the IQR method and replaces them with median values.
 
-**Example:**
-```python
-DataPreprocessor(df).process_data()
-```
 
-###  TimeSeriesAnalyzer Module
+
+###  Analyzer Module
+This module provides statistical tests (ADF, KPSS) and signal 
+decomposition specifically tuned for financial datasets like ADANIPORTS.
 1. **`adf_test()` / `kpss_test()`**: Performs dual stationarity checks to determine if the series is predictable.
 2. **`decompose_signal()`**: Breaks the data into **Trend**, **Seasonality**, and **Residuals**.
 3. **`get_volatility_stats()`**: Calculates annualized risk based on daily returns.
+4. **`daily_returns() `** : Calculates daily returns from a price series
 
-**Example:**
-```python
-TimeSeriesAnalyzer(df).adf_test()
-```
 
-###  TimeSeriesVisualizer Module
-1. **`plot_seasonal_heatmap()`**: Visualizes monthly price patterns over the years.
-2. **`plot_pacf_acf()`**: Generates plots to help identify ARIMA model parameters.
-3. **`plot_rolling_stats()`**: Shows the original data vs. a 30-day moving average.
-4. **`plot_decomposition()`**: Plots the 4 components: Observed, Trend, Seasonal, and Residual.
-5. **`plot_daily_returns_distribution()`**: Plot distribustion of daily returns
 
-**Example:**
-```python
-TimeSeriesVisualizer(df).plot_rolling_stats(window=30)
-```
+###  Visualizer Module
+Visualizer Module for Time Series Analysis with plotting for the project.
+1. **`plot_data()`**: Plot time series data
+2. **`plot_seasonal_heatmap()`**: Visualizes heatmap of average price by Month and Year.
+3. **`plot_pacf_acf()`**: Generates plots of autocorrelation and partial autocorrelatio to help identify ARIMA model parameters.
+4. **`plot_rolling_stats()`**: Shows the original data vs. a 30-day moving average.
+5. **`plot_decomposition()`**: Plots the 4 components: Observed, Trend, Seasonal, and Residual.
+6. **`plot_daily_returns_distribution()`**: Plot distribustion of daily returns
+
 
 ---
 **Author:** Leila Rahimiyadkuri  

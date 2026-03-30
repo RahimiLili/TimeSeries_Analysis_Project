@@ -14,7 +14,7 @@ class TimeSeriesAnalyzer:
     """
 
     def __init__(self, df, column='Close', date_col='Date', period=252):
-        # I use 252 because that's the approximate number of trading days in a year instead of 365
+        # It uses 252 because that's the approximate number of trading days in a year instead of 365
         self.df = df.copy()
         self.column = column
         self.date_col = date_col
@@ -65,7 +65,7 @@ class TimeSeriesAnalyzer:
     def get_volatility_stats(self):
         """
         Calculates daily and annual volatility using percentage changes.
-        Annualized volatility = daily_std * sqrt(252 trading days).
+        Annualized volatility = daily_std * sqrt(252 )(trading days).
         """
         returns = self.df[self.column].pct_change().dropna()
         daily_vol = returns.std()
