@@ -31,6 +31,7 @@ def main():
     preprocessor = DataPreprocessor(df_raw)
     
     # Chaining the processing steps for a cleaner flow
+    df_clean = preprocessor.clean_headers()
     df_clean = preprocessor.process_data()
     df_clean = preprocessor.handle_outliers()
     print("[+] Data cleaned and outliers addressed.")
@@ -43,7 +44,10 @@ def main():
     adf_res = analyzer.adf_test()
     status = "STATIONARY" if adf_res['is_stationary'] else "NON-STATIONARY"
     print(f"[*] ADF Test: {status} (p-value: {adf_res['p-value']:.4f})")
-    
+    import warnings
+    from statsmodels.tools.sm_exceptions import InterpolationWarning
+    # This line hides the address and the explanation warning
+    warnings.filterwarnings("ignore", category=InterpolationWarning)
     kpss_res = analyzer.kpss_test()
     # status = "STATIONARY" if adf_res['is_stationary'] else "NON-STATIONARY"
     print(f"[*] KPSS Test: {status} (p-value: {kpss_res['p-value']:.4f})")
